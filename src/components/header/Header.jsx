@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Bell, Info, Moon, Search } from "../icons/Icons";
-
+import { navLinks } from "../sidebar/NavLinks";
+import { useLocation } from "react-router-dom";
 function Header() {
+  const location = useLocation();
   const handleTheme = () => {
     const htmlElement = document.documentElement;
     const isDarkModeEnabled = !htmlElement.classList.contains("dark");
@@ -37,13 +39,18 @@ function Header() {
     };
   }, []);
 
+  const CurrentPage = useMemo(() => {
+    return navLinks.find((item) => location.pathname.includes(item.path)).name;
+  }, [location.pathname]);
   return (
     <header className="flex items-center justify-between bg-body-light dark:bg-body-dark fixed z-[9999] w-[calc(100%-360px)] top-7">
       <div className="flex flex-col">
         <span className="text-[#707EAE] text-sm dark:text-primary">
-          Pages/Dashboard
+          Pages/{CurrentPage}
         </span>
-        <h3 className="text-3xl font-bold">Main Dashboard</h3>
+        <h3 className="text-3xl font-bold">
+          {CurrentPage === "Dashboard" ? "Main Dasboard" : CurrentPage}
+        </h3>
       </div>
       <div className="shadow-light dark:shadow-none bg-primary dark:bg-secondary  min-h-[61px] rounded-[30px] p-[10px] flex justify-center items-center gap-3">
         <div className="min-w-[214px] max-w-[214px] relative">

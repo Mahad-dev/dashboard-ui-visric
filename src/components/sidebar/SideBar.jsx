@@ -1,46 +1,7 @@
 import React from "react";
-import {
-  Cart,
-  Chart,
-  Home,
-  Kanban,
-  Lock,
-  Profile,
-} from "../../components/icons/Icons";
 import { NavLink as Link, useLocation } from "react-router-dom";
-const navLinks = [
-  {
-    path: "dashboard",
-    name: "Dashboard",
-    icon: <Home />,
-  },
-  {
-    path: "marketplace",
-    name: "NFT Marketplace",
-    icon: <Cart />,
-  },
+import { navLinks } from "./NavLinks";
 
-  {
-    path: "tables",
-    name: "Tables",
-    icon: <Chart />,
-  },
-  {
-    path: "kanban",
-    name: "Kanban",
-    icon: <Kanban />,
-  },
-  {
-    path: "profile",
-    name: "Profile",
-    icon: <Profile />,
-  },
-  {
-    path: "sign-in",
-    name: "Sign In",
-    icon: <Lock />,
-  },
-];
 function SideBar({ width }) {
   const location = useLocation();
   const pathname = location.pathname;

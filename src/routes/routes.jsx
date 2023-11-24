@@ -23,7 +23,23 @@ export const routes = Router([
       },
       {
         path : "marketplace",
-        element: <div>Market place</div>
+        element: <div>Market place Page</div>
+      },
+      {
+        path : "tables",
+        element: <div>Tables Page</div>
+      },
+      {
+        path : "kanban",
+        element: <div>Kanban Page</div>
+      },
+      {
+        path : "profile",
+        element: <div>Profile Page</div>
+      },
+      {
+        path : "sign-in",
+        element: <div>Sign in Page</div>
       }
     ],
   },
