@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Bell, Info, Moon, Search } from "../icons/Icons";
 import { navLinks } from "../sidebar/NavLinks";
 import { useLocation } from "react-router-dom";
@@ -42,6 +42,26 @@ function Header() {
   const CurrentPage = useMemo(() => {
     return navLinks.find((item) => location.pathname.includes(item.path)).name;
   }, [location.pathname]);
+
+  const [dropDown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    // Function to handle outside clicks
+    const handleOutsideClick = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    // Attach the event listener to the document
+    document.addEventListener("click", handleOutsideClick);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
   return (
     <header className="flex items-center justify-between bg-body-light dark:bg-body-dark fixed z-[9999] w-[calc(100%-360px)] top-7">
       <div className="flex flex-col">
@@ -69,14 +89,17 @@ function Header() {
           />
           <Info className="cursor-pointer fill-gray dark:fill-primary" />
         </div>
-        <figure className="w-[41px] h-[41px] overflow-hidden">
+        <figure
+          onClick={() => setShowDropdown(!dropDown)}
+          ref={dropdownRef}
+          className="w-[41px] h-[41px] relative cursor-pointer bg-gray rounded-full"
+        >
           <img
-            className="w-full h-full rounded-full object-cover"
-            src="https://s3-alpha-sig.figma.com/img/b940/caf9/f3a52bcc9317c793ebc094db911b237b?Expires=1701648000&Signature=lYZRBo~OqRlGfyBOr7zEnyHpg2vnF6dNUYOIEdLXzBHi37TyOEjWW1~zbIdgKO5NXu73ZlwVGYJgfQWbkGX
-
-KseASlWxD2tlsczeIS7-Oc2l8m~cywB-4rBmefI1u1yI22j6na7rf6bN3jlXqZN6PkKadeoogCU6AKNtXSpMVkZO2AbTXv0xzLNlLdh6uTj0Bp-0y~aJh2X~9o9JaVTAgQa2IvELwnEjSnzCMUl99r9S1YcDANBXSR2b4ypycLMq8xcyOwZ-kgWWB6v1BprICZ6tW1DL9qTjII2QUzraJJubgewPDyFhcGhclkN1NfNmjCdWb0c3FX3skfK1NQzdmmA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+            className="w-full h-full rounded-full overflow-hidden object-cover"
+            src="https://i.ibb.co/ngZfJGg/2d815373-4633-4d20-b408-1e64ff7b385d.png"
             alt="User profile"
           />
+          {dropDown && <ProfileInfo />}
         </figure>
       </div>
     </header>
@@ -84,3 +107,18 @@ KseASlWxD2tlsczeIS7-Oc2l8m~cywB-4rBmefI1u1yI22j6na7rf6bN3jlXqZN6PkKadeoogCU6AKNt
 }
 
 export default Header;
+
+function ProfileInfo() {
+  return (
+    <ul className="shadow-light dark:shadow-none absolute top-[40px] left-[-100px] min-w-[150px] max-w-[150px] font-medium text-[12px] text-gray flex flex-col gap-2 rounded-[10px] bg-body-light dark:bg-body-dark p-[8px]">
+      {["Name: Mahad Khurshid", "Age: 22", "Education: BScs" , "Profession: Software Engineer"].map((item) => (
+        <li
+          className="cursor-pointer hover:text-base-blue dark:hover:text-primary"
+          key={item}
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
